@@ -115,7 +115,7 @@ object Issues {
     val UNHIDDEN_SYSTEM_API by Issue(Severity.ERROR, Category.API_LINT)
     val SHOWING_MEMBER_IN_HIDDEN_CLASS by Issue(Severity.ERROR, Category.API_LINT)
     val INVALID_NULLABILITY_ANNOTATION by Issue(Severity.ERROR)
-    val REFERENCES_HIDDEN by Issue(Severity.ERROR, Category.API_LINT)
+    val REFERENCES_HIDDEN by Issue(Severity.WARNING, Category.API_LINT)
     val IGNORING_SYMLINK by Issue(Severity.INFO)
     val INVALID_NULLABILITY_ANNOTATION_WARNING by Issue(Severity.WARNING)
     // The plan is for this to be set as an error once (1) existing code is marked as @deprecated
