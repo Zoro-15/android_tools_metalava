@@ -23,11 +23,13 @@ import com.android.tools.metalava.cli.common.ExecutionEnvironment
 import com.android.tools.metalava.cli.common.PreviouslyReleasedApi
 import com.android.tools.metalava.cli.common.allowStructuredOptionName
 import com.android.tools.metalava.cli.common.existingFile
+import com.android.tools.metalava.cli.common.fileForPathInner
 import com.android.tools.metalava.cli.common.map
 import com.android.tools.metalava.model.Codebase
 import com.android.tools.metalava.model.api.surface.ApiVariantType
 import com.android.tools.metalava.model.visitors.ApiType
 import com.github.ajalt.clikt.parameters.groups.OptionGroup
+import com.github.ajalt.clikt.parameters.options.convert
 import com.github.ajalt.clikt.parameters.options.multiple
 import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.unique
@@ -107,7 +109,7 @@ class CompatibilityCheckOptions(
                 help = "Legacy alias for $ARG_CHECK_COMPATIBILITY_API_RELEASED",
                 hidden = true,
             )
-            .existingFile()
+            .convert { fileForPathInner(it) }
             .multiple()
             .allowStructuredOptionName()
             .map { CheckRequest.optionalCheckRequest(it, ApiType.PUBLIC_API) }
@@ -118,7 +120,7 @@ class CompatibilityCheckOptions(
                 help = "Legacy alias for $ARG_CHECK_COMPATIBILITY_REMOVED_RELEASED",
                 hidden = true,
             )
-            .existingFile()
+            .convert { fileForPathInner(it) }
             .multiple()
             .allowStructuredOptionName()
             .map { CheckRequest.optionalCheckRequest(it, ApiType.REMOVED) }
@@ -193,10 +195,12 @@ class CompatibilityCheckOptions(
 
         companion object {
             /** Create a [CheckRequest] if [files] is not empty, otherwise return `null`. */
-            internal fun optionalCheckRequest(files: List<File>, apiType: ApiType) =
-                PreviouslyReleasedApi.optionalPreviouslyReleasedApi(
+            internal fun optionalCheckRequest(files: List<File>, apiType: ApiType): CheckRequest? {
+                val validFiles = files.filter { it.name != "disabled" && it.path != "disabled" && it.exists() }
+                if (validFiles.isEmpty()) return null
+                return PreviouslyReleasedApi.optionalPreviouslyReleasedApi(
                         checkCompatibilityOptionForApiType(apiType),
-                        files,
+                        validFiles,
                         apiVariantType =
                             when (apiType) {
                                 ApiType.REMOVED -> ApiVariantType.REMOVED
@@ -204,6 +208,7 @@ class CompatibilityCheckOptions(
                             },
                     )
                     ?.let { previouslyReleasedApi -> CheckRequest(previouslyReleasedApi, apiType) }
+            }
 
             private fun checkCompatibilityOptionForApiType(apiType: ApiType) =
                 "--check-compatibility:${apiType.flagName}:released"
