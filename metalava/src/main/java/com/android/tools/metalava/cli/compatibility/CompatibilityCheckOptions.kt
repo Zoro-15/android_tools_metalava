@@ -33,7 +33,10 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.unique
 import java.io.File
 
+const val ARG_CHECK_COMPATIBILITY = "--check-compatibility"
+const val ARG_CHECK_COMPATIBILITY_RELEASED = "--check-compatibility:released"
 const val ARG_CHECK_COMPATIBILITY_API_RELEASED = "--check-compatibility:api:released"
+const val ARG_CHECK_COMPATIBILITY_REMOVED = "--check-compatibility:removed"
 const val ARG_CHECK_COMPATIBILITY_REMOVED_RELEASED = "--check-compatibility:removed:released"
 const val ARG_ERROR_MESSAGE_CHECK_COMPATIBILITY_RELEASED = "--error-message:compatibility:released"
 
@@ -91,6 +94,29 @@ class CompatibilityCheckOptions(
                         provided in order from the narrowest API to the widest API.
                     """
                         .trimIndent(),
+            )
+            .existingFile()
+            .multiple()
+            .allowStructuredOptionName()
+            .map { CheckRequest.optionalCheckRequest(it, ApiType.REMOVED) }
+
+    private val checkReleasedApiLegacy: CheckRequest? by
+        option(
+                ARG_CHECK_COMPATIBILITY,
+                ARG_CHECK_COMPATIBILITY_RELEASED,
+                help = "Legacy alias for $ARG_CHECK_COMPATIBILITY_API_RELEASED",
+                hidden = true,
+            )
+            .existingFile()
+            .multiple()
+            .allowStructuredOptionName()
+            .map { CheckRequest.optionalCheckRequest(it, ApiType.PUBLIC_API) }
+
+    private val checkReleasedRemovedLegacy: CheckRequest? by
+        option(
+                ARG_CHECK_COMPATIBILITY_REMOVED,
+                help = "Legacy alias for $ARG_CHECK_COMPATIBILITY_REMOVED_RELEASED",
+                hidden = true,
             )
             .existingFile()
             .multiple()
@@ -193,7 +219,12 @@ class CompatibilityCheckOptions(
      * The list of [CheckRequest] instances that need to be performed on the API being generated.
      */
     val compatibilityChecks by
-        lazy(LazyThreadSafetyMode.NONE) { listOfNotNull(checkReleasedApi, checkReleasedRemoved) }
+        lazy(LazyThreadSafetyMode.NONE) {
+            listOfNotNull(
+                checkReleasedApi ?: checkReleasedApiLegacy,
+                checkReleasedRemoved ?: checkReleasedRemovedLegacy,
+            )
+        }
 
     /**
      * The optional Codebase corresponding to [compatibilityChecks].
