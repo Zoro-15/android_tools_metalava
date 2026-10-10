@@ -72,5 +72,5 @@ class CommonBaselineOptions(
                     """
                         .trimIndent()
             )
-            .flag()
+            .flag(default = true)
 }
