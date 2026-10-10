@@ -178,7 +178,7 @@ internal fun stringToNewDir(value: String): File {
  */
 internal fun stringToExistingFile(value: String): File {
     val file = fileForPathInner(value)
-    if (!file.isFile) {
+    if (!file.isFile && file.name != "disabled") {
         cliError("$file is not a file")
     }
     return file
