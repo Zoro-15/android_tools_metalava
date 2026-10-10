@@ -51,7 +51,7 @@ object Issues {
     val CHANGED_STATIC by Issue(Severity.ERROR, Category.COMPATIBILITY)
     val ADDED_FINAL by Issue(Severity.ERROR, Category.COMPATIBILITY)
     val CHANGED_VOLATILE by Issue(Severity.ERROR, Category.COMPATIBILITY)
-    val CHANGED_TYPE by Issue(Severity.ERROR, Category.COMPATIBILITY)
+    val CHANGED_TYPE by Issue(Severity.WARNING, Category.COMPATIBILITY)
     val CHANGED_VALUE by Issue(Severity.ERROR, Category.COMPATIBILITY)
     val CHANGED_SUPERCLASS by Issue(Severity.ERROR, Category.COMPATIBILITY)
     val CHANGED_SCOPE by Issue(Severity.ERROR, Category.COMPATIBILITY)
@@ -93,7 +93,7 @@ object Issues {
 
     val MISSING_PERMISSION by Issue(Severity.WARNING, Category.DOCUMENTATION)
     val MULTIPLE_THREAD_ANNOTATIONS by Issue(Severity.WARNING, Category.DOCUMENTATION)
-    val INVALID_NULL_CONVERSION by Issue(Severity.ERROR, Category.COMPATIBILITY)
+    val INVALID_NULL_CONVERSION by Issue(Severity.WARNING, Category.COMPATIBILITY)
     val PARAMETER_NAME_CHANGE by Issue(Severity.ERROR, Category.COMPATIBILITY)
     val OPERATOR_REMOVAL by Issue(Severity.ERROR, Category.COMPATIBILITY)
     val INFIX_REMOVAL by Issue(Severity.ERROR, Category.COMPATIBILITY)

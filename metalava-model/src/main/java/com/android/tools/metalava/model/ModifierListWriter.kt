@@ -244,9 +244,12 @@ private constructor(
         }
 
         // Remove @SuppressCompatibility if it exists (it will for text codebases) because it was
-        // already written out above.
+        // already written out above. Also filter out internal Ravenwood test annotations.
         annotations =
-            annotations.filter { it.qualifiedName != SUPPRESS_COMPATIBILITY_ANNOTATION_QUALIFIED }
+            annotations.filter {
+                it.qualifiedName != SUPPRESS_COMPATIBILITY_ANNOTATION_QUALIFIED &&
+                    it.qualifiedName?.startsWith("android.ravenwood.annotation.") != true
+            }
         // Ensure stable signature file order
         if (annotations.size > 1) {
             annotations = annotations.sortedBy { it.qualifiedName }
