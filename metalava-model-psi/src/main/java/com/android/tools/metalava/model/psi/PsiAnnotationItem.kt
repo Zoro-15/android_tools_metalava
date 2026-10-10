@@ -254,25 +254,30 @@ private constructor(
                     }
                 }
                 is PsiBinaryExpression -> {
-                    appendValue(
-                        codebase,
-                        sb,
-                        value.lOperand,
-                        target,
-                        showDefaultAttrs = showDefaultAttrs,
-                        alwaysInlineValues = alwaysInlineValues,
-                    )
-                    sb.append(' ')
-                    sb.append(value.operationSign.text)
-                    sb.append(' ')
-                    appendValue(
-                        codebase,
-                        sb,
-                        value.rOperand,
-                        target,
-                        showDefaultAttrs = showDefaultAttrs,
-                        alwaysInlineValues = alwaysInlineValues,
-                    )
+                    val source = getConstantSource(value)
+                    if (source != null) {
+                        sb.append(source)
+                    } else {
+                        appendValue(
+                            codebase,
+                            sb,
+                            value.lOperand,
+                            target,
+                            showDefaultAttrs = showDefaultAttrs,
+                            alwaysInlineValues = alwaysInlineValues,
+                        )
+                        sb.append(' ')
+                        sb.append(value.operationSign.text)
+                        sb.append(' ')
+                        appendValue(
+                            codebase,
+                            sb,
+                            value.rOperand,
+                            target,
+                            showDefaultAttrs = showDefaultAttrs,
+                            alwaysInlineValues = alwaysInlineValues,
+                        )
+                    }
                 }
                 is PsiArrayInitializerMemberValue -> {
                     sb.append('{')

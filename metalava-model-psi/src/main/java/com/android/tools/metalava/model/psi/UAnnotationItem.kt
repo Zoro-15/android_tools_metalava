@@ -213,11 +213,16 @@ private constructor(
                     appendQualifiedName(codebase, sb, value)
                 }
                 is UBinaryExpression -> {
-                    appendValue(codebase, sb, value.leftOperand, target, showDefaultAttrs)
-                    sb.append(' ')
-                    sb.append(value.operator.text)
-                    sb.append(' ')
-                    appendValue(codebase, sb, value.rightOperand, target, showDefaultAttrs)
+                    val source = getConstantSource(value)
+                    if (source != null) {
+                        sb.append(source)
+                    } else {
+                        appendValue(codebase, sb, value.leftOperand, target, showDefaultAttrs)
+                        sb.append(' ')
+                        sb.append(value.operator.text)
+                        sb.append(' ')
+                        appendValue(codebase, sb, value.rightOperand, target, showDefaultAttrs)
+                    }
                 }
                 is UCallExpression -> {
                     if (value.isArrayInitializer()) {

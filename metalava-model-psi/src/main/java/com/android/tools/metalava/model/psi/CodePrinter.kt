@@ -339,7 +339,12 @@ class CodePrinter(
             if (inlineConstants) {
                 val constant = expression.evaluate()
                 if (constant != null) {
-                    sb.append(constantToSource(constant))
+                    val exp = constantToExpression(constant)
+                    if (exp != null) {
+                        sb.append(exp)
+                    } else {
+                        sb.append(constantToSource(constant))
+                    }
                     return true
                 }
             }
