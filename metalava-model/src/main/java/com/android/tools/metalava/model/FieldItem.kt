@@ -71,6 +71,10 @@ interface FieldItem : MemberItem, InheritableItem {
      */
     val initialValue: Value?
 
+    /** Legacy alias for backwards compatibility */
+    val constantValue: Value?
+        get() = initialValue
+
     /**
      * An enum can contain both enum constants and fields; this method provides a way to distinguish
      * between them.

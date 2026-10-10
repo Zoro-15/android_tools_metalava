@@ -271,3 +271,7 @@ internal sealed class DefaultValue : Value {
 
     override fun toString() = "${javaClass.simpleName}(${toValueString()})"
 }
+
+/** Extension function to retrieve underlying string value or string representation */
+fun Value.asString(): String = (this as? StringValue)?.value ?: toValueString()
+
