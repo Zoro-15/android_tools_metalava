@@ -167,7 +167,7 @@ private enum class ConfigurableAspect {
             id: String
         ) {
             val issue =
-                Issues.findIssueById(id) ?: cliError("Unknown issue id: '$optionName' '$id'")
+                Issues.findIssueById(id) ?: return
 
             configuration.setSeverity(issue, severity)
         }
