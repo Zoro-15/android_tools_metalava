@@ -29,6 +29,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.github.ajalt.clikt.parameters.types.restrictTo
 
 const val ARG_ERROR = "--error"
+const val ARG_TREAT_AS_ERROR = "--treat-as-error"
 const val ARG_ERROR_WHEN_NEW = "--error-when-new"
 const val ARG_WARNING = "--warning"
 const val ARG_HIDE = "--hide"
@@ -208,6 +209,12 @@ private enum class ConfigLabel(
 ) {
     ERROR(
         ARG_ERROR,
+        Severity.ERROR,
+        ConfigurableAspect.ISSUE,
+        "Report issues of the given id as errors.",
+    ),
+    TREAT_AS_ERROR(
+        ARG_TREAT_AS_ERROR,
         Severity.ERROR,
         ConfigurableAspect.ISSUE,
         "Report issues of the given id as errors.",
