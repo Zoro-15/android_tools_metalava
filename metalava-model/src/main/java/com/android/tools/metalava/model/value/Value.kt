@@ -273,5 +273,5 @@ internal sealed class DefaultValue : Value {
 }
 
 /** Extension function to retrieve underlying string value or string representation */
-fun Value.asString(): String = (this as? StringValue)?.value ?: toValueString()
+fun Value.asString(): String = (this as? LiteralValue<*>)?.underlyingValue?.toString() ?: toValueString()
 
